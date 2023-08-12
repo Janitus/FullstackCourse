@@ -1,0 +1,16 @@
+Diagram
+
+ Browser connects the website
+ Browser -> Server: - Get HTML document
+ Server -> Browser: -> Return HTML document
+
+ Browser -> Server: Get CSS
+ Server -> Browser: Return CSS
+
+ Browser -> Server: Get Javascript
+ Server -> Browser: Return Javascript
+
+ Browser: Begin executing javascript
+
+ Browser: Get JSON
+ Server -> Browser: Return JSON

@@ -1,0 +1,30 @@
+Diagram
+
+ Browser connects the website
+ Browser -> Server: - Get HTML document
+ Server -> Browser: -> Return HTML document
+
+ Browser -> Server: Get CSS
+ Server -> Browser: Return CSS
+
+ Browser -> Server: Get Javascript
+ Server -> Browser: Return Javascript
+
+ Browser: Begin executing javascript
+
+ Browser: Get JSON
+ Server -> Browser: Return JSON
+
+ User -> Browser: Input text in the textfield
+ User -> Browser: Press save button, calling the corresponding action with text as parameter
+ Browser: Execute spa.js
+ Browser (From js code) -> Server: Post the new note to the server
+
+ Server: Update notes
+ Browser: Update notes
+ Browser: Refresh from the start of this diagram
+
+
+
+
+
