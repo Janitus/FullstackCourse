@@ -1,0 +1,30 @@
+{
+  "name": "osa3",
+  "version": "1.0.0",
+  "description": "backendhommia",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Janitus/FullstackCourse.git"
+  },
+  "keywords": [
+    "sipuli"
+  ],
+  "author": "Janitus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Janitus/FullstackCourse/issues"
+  },
+  "homepage": "https://github.com/Janitus/FullstackCourse#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
