@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const Phonebook = require('.models/phonebook')
 
 // Frontend build
 app.use(express.static('build'));
@@ -39,7 +40,7 @@ app.get('/', function (req, res) {
 
 app.get('/api/persons', (req, res) => {
     //res.json(persons);
-
+    console.log("fetching phonebook")
     Phonebook.find({}).then(result => {
         res.json(phonebook);
     })
@@ -153,15 +154,6 @@ const url = `mongodb+srv://jankuul:${password}@cluster0.it26as1.mongodb.net/note
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
-
-const phonebookSchema = new mongoose.Schema({
-  name: String,
-  number: String,
-})
-
-const Phonebook = mongoose.model('Phonebook', phonebookSchema)
-
-
 
 /*
 const PORT = 3001;
