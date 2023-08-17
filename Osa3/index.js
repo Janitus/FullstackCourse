@@ -137,13 +137,17 @@ app.listen(PORT, () => {
 
 const mongoose = require('mongoose')
 
-//const password = process.argv[2]
-//const url = `mongodb+srv://jankuul:${password}@cluster0.it26as1.mongodb.net/noteApp?retryWrites=true&w=majority`
 const url = process.env.MONGODB_URI;
 
-
 mongoose.set('strictQuery', false)
-mongoose.connect(url)
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('connected to MongoDB');
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message);
+  });
+
 
 /*
 const PORT = 3001;
