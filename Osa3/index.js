@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const Phonebook = require('./models/phonebook');
+require('dotenv').config();
 
 
 // Frontend build
@@ -136,22 +137,10 @@ app.listen(PORT, () => {
 
 const mongoose = require('mongoose')
 
-if (process.argv.length < 3) {
-  console.log('give password as argument')
-  /*
-  Phonebook.find({}).then(result => {
-    result.forEach(phonebook => {
-      console.log(phonebook)
-    })
-    mongoose.connection.close()
-  })
-  */
-  process.exit(1)
-}
+//const password = process.argv[2]
+//const url = `mongodb+srv://jankuul:${password}@cluster0.it26as1.mongodb.net/noteApp?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI;
 
-const password = process.argv[2]
-
-const url = `mongodb+srv://jankuul:${password}@cluster0.it26as1.mongodb.net/noteApp?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
