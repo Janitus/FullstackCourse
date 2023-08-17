@@ -5,7 +5,6 @@ const Phonebook = require('./models/phonebook');
 
 require('dotenv').config();
 
-
 // Frontend build
 app.use(express.static('build'));
 
@@ -28,13 +27,13 @@ app.use(cors())
 //app.use(unknownEndpoint)
 //app.use(requestLogger)
 
-let persons = [
-  { id: 1, name: "Simo Sipuli", number: "123-4567" },
-  { id: 2, name: "Pekka Porkkana", number: "234-5678" },
-  { id: 3, name: "Rokka", number: "111-1111" },
-  { id: 4, name: "Muumi", number: "123-4567" },
-  { id: 5, name: "Kalapuikko", number: "234-5678" },
-];
+//let persons = [
+//  { id: 1, name: "Simo Sipuli", number: "123-4567" },
+//  { id: 2, name: "Pekka Porkkana", number: "234-5678" },
+//  { id: 3, name: "Rokka", number: "111-1111" },
+//  { id: 4, name: "Muumi", number: "123-4567" },
+//  { id: 5, name: "Kalapuikko", number: "234-5678" },
+//];
 
 // Gets
 
@@ -70,10 +69,11 @@ app.get('*', (req, res) => { // Make the user go back to index.html if they atte
     res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
-// Add and delete
+// Add, update and delete
 
 app.post('/api/persons', (req, res) => {
     const body = req.body;
+    console.log("Adding person "+body.name+" "+body.number);
 
     // Check if invalid input
     if (!body.name || !body.number) {
@@ -89,13 +89,6 @@ app.post('/api/persons', (req, res) => {
         });
     }
 
-    //const person = {
-    //    // Generate a random ID
-    //    id: Math.floor(Math.random() * 1000000),
-    //    name: body.name,
-    //    number: body.number,
-    //};
-
     // console.log("Added person to "+person.name+" "+person.number+" "+person.id)
 
     const person = new Phonebook({
@@ -104,21 +97,42 @@ app.post('/api/persons', (req, res) => {
     });
 
     person.save().then(savedPerson => {
-        res.json(savedPerson);
+        //res.json(savedPerson);
     });
 
-    persons.push(person);
-    res.json(person);
+    //persons.push(person);
+    //res.json(person);
 });
+
+app.put('/api/persons/:id', (req, res) => { // Note to self: Put stands for update
+    console.log(`Received PUT request for ID: ${req.params.id}`);
+    const id = req.params.id;
+    const body = req.body;
+
+    if (!id || id === 'undefined') return res.status(400).json({ error: 'Invalid or missing ID' });
+
+    const updatedPerson = {
+        name: body.name,
+        number: body.number
+    };
+
+    Phonebook.findByIdAndUpdate(id, updatedPerson, { new: true })
+        .then(updatedPerson => {
+            res.json(updatedPerson);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error: 'Something went wrong, person could not be updated' });
+        });
+});
+
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id;
     console.log("Attempting to delete ID: "+id);
 
-    if (!id || id === 'undefined') {
-        return res.status(400).json({ error: 'Invalid or missing ID' });
-    }
-
+    if (!id || id === 'undefined') return res.status(400).json({ error: 'Invalid or missing ID' });
+    
     Phonebook.findByIdAndRemove(id)
         .then(result => {
             if (result) {
@@ -132,15 +146,6 @@ app.delete('/api/persons/:id', (req, res) => {
             res.status(500).json({ error: 'Something went wrong' });
         });
 });
-
-
-
-//app.delete('/api/persons/:id', (req, res) => {
-//    const id = Number(req.params.id);
-//    persons = persons.filter(p => p.id !== id);
-//
-//    res.status(204).end();
-//});
 
 // Search functions
 

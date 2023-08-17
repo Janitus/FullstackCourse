@@ -42,7 +42,10 @@ function App() {
       if(isConfirmed) {
         const updatedPerson = { ...personExists, number: newNumber };
         phonebookService.url
-        axios.put(baseUrl+`${personExists.id}`, updatedPerson)
+        console.log("Update person with: "+personExists.id+" "+personExists.name+" "+personExists.number);
+        console.log(`PUT request to URL: ${baseUrl}/${personExists.id}`);
+        axios.put(`${baseUrl}/${personExists.id}`, updatedPerson)
+
         .then(response => {
           setPersons(persons.map(p => p.id !== personExists.id ? p : response.data));
           showNotification(`Added new number (${newNumber}) to ${newName}`, 'success');
@@ -59,7 +62,11 @@ function App() {
       console.log("Trying to add person to url: "+baseUrl)
       axios.post(baseUrl, newPerson)
         .then(response => {
-          setPersons(persons.concat(response.data));
+          const addedPerson = {
+            ...response.data,
+            id: response.data._id
+          };
+          setPersons(persons.concat(addedPerson)); //setPersons(persons.concat(response.data));
           setNewName('');
           setNewNumber('');
           showNotification(`Added ${newName}`, 'success');
@@ -160,7 +167,7 @@ const NewPersonForm = ({ handleSubmit, newName, handleNameChange, newNumber, han
 }
 
 const Person = ({ person, handleDelete }) => {
-  console.log("Person object:", person);
+  //console.log("Person object:", person);
   return (
     <p>
       {person.name} / {person.number}
