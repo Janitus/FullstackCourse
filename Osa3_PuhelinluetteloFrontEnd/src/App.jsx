@@ -11,10 +11,14 @@ function App() {
   useEffect(() => {
     phonebookService.getAll()
       .then(response => {
-        console.log("Fetch data from phonebook service");
-        setPersons(response.data);
+        const transformedPersons = response.data.map(person => ({
+          ...person,
+          id: person._id // IMPORTANT, use _id as it is the mongodb identifier. Otherwise we get undefined!
+        }));
+        setPersons(transformedPersons);
       })
   }, []);
+
 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
@@ -75,6 +79,7 @@ function App() {
       console.log("Attempting to delete id on front: "+id);
       const personToDelete = persons.find(p => p.id === id);
       if (window.confirm(`Delete ${personToDelete.name}?`)) {
+        console.log("Deleting person with ID:", id);
         phonebookService.remove(id)
           .then(() => {
             setPersons(persons.filter(p => p.id !== id));
@@ -155,6 +160,7 @@ const NewPersonForm = ({ handleSubmit, newName, handleNameChange, newNumber, han
 }
 
 const Person = ({ person, handleDelete }) => {
+  console.log("Person object:", person);
   return (
     <p>
       {person.name} / {person.number}
