@@ -41,10 +41,9 @@ app.get('/', function (req, res) {
   })
 
 app.get('/api/persons', (req, res) => {
-    //res.json(persons);
     console.log("fetching phonebook")
     Phonebook.find({}).then(result => {
-        res.json(phonebook);
+        res.json(result);
     })
 });
 
