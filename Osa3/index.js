@@ -38,7 +38,11 @@ app.get('/', function (req, res) {
   })
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    //res.json(persons);
+
+    Phonebook.find({}).then(result => {
+        res.json(phonebook);
+    })
 });
 
 app.get('/api/info', (req, res) => {
@@ -125,6 +129,39 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+// Mongoose
+
+const mongoose = require('mongoose')
+
+if (process.argv.length < 3) {
+  console.log('give password as argument')
+  /*
+  Phonebook.find({}).then(result => {
+    result.forEach(phonebook => {
+      console.log(phonebook)
+    })
+    mongoose.connection.close()
+  })
+  */
+  process.exit(1)
+}
+
+const password = process.argv[2]
+
+const url = `mongodb+srv://jankuul:${password}@cluster0.it26as1.mongodb.net/noteApp?retryWrites=true&w=majority`
+
+mongoose.set('strictQuery', false)
+mongoose.connect(url)
+
+const phonebookSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+})
+
+const Phonebook = mongoose.model('Phonebook', phonebookSchema)
+
+
 
 /*
 const PORT = 3001;
