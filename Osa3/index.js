@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const Phonebook = require('.models/phonebook')
+const Phonebook = require('./models/phonebook');
+
 
 // Frontend build
 app.use(express.static('build'));
