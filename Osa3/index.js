@@ -113,6 +113,7 @@ app.post('/api/persons', (req, res) => {
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id;
+    console.log("Attempting to delete ID: "+id);
 
     Phonebook.findByIdAndRemove(id)
         .then(result => {

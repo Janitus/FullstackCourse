@@ -72,6 +72,7 @@ function App() {
     }
 
     const handleDelete = (id) => {
+      console.log("Attempting to delete id on front: "+id);
       const personToDelete = persons.find(p => p.id === id);
       if (window.confirm(`Delete ${personToDelete.name}?`)) {
         phonebookService.remove(id)
