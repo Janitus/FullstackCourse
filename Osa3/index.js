@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const PORT = 3001;
 
 // HUOMIO! app.usejen järjestyksellä on väliä!
 app.use(express.json());
@@ -113,8 +112,16 @@ const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
   }
 
-// Start log
+// Start
 
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+/*
+const PORT = 3001;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+*/
