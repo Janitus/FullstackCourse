@@ -12,6 +12,11 @@ var morgan = require('morgan')
 morgan.token('body', (req) => JSON.stringify(req.body));
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
 
+// Cors
+
+const cors = require('cors')
+app.use(cors())
+
 
 //app.use(unknownEndpoint)
 //app.use(requestLogger)
