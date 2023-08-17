@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
+require('./mongoConfig');
 const Phonebook = require('./models/phonebook');
+
 require('dotenv').config();
 
 
@@ -133,7 +135,7 @@ app.listen(PORT, () => {
 });
 
 // ------------------------------------------------------- Mongoose -------------------------------------------------------
-
+/*
 const mongoose = require('mongoose')
 
 const url = process.env.MONGODB_URI;
