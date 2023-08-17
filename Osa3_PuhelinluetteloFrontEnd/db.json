@@ -1,0 +1,56 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
+      "name": "TestWooo",
+      "number": "123 999 111 321",
+      "id": 3
+    },
+    {
+      "name": "2h2h",
+      "number": "",
+      "id": 4
+    },
+    {
+      "name": "awbrawb",
+      "number": "",
+      "id": 5
+    },
+    {
+      "name": "taa",
+      "number": "3535",
+      "id": 6
+    }
+  ],
+  "notes": [
+    {
+      "content": "aaaaaaaa",
+      "important": "true",
+      "id": 1
+    },
+    {
+      "content": "bbbbbbbbbb",
+      "important": "true",
+      "id": 2
+    },
+    {
+      "content": "cccccccccc",
+      "important": "false",
+      "id": 3
+    },
+    {
+      "content": "dddddddddd",
+      "important": "false",
+      "id": 4
+    }
+  ]
+}

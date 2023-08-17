@@ -132,7 +132,7 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-// Mongoose
+// ------------------------------------------------------- Mongoose -------------------------------------------------------
 
 const mongoose = require('mongoose')
 

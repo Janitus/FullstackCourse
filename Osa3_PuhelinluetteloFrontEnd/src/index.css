@@ -1,3 +1,11 @@
+body {
+    background-color: rgb(55, 63, 71)
+}
+
+div {
+    color: rgb(192, 225, 255)
+}
+
 h1 {
     color: green;
 }
@@ -12,10 +20,12 @@ h1 {
 .notification.success {
 background-color: lightgreen;
 border-color: green;
+color: rgb(0, 145, 19);
 }
 
 .notification.error {
 background-color: lightcoral;
 border-color: red;
+color: rgb(255, 0, 0);
 }
   

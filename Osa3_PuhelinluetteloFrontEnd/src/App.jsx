@@ -3,14 +3,15 @@ import './index.css'
 import axios from 'axios';
 import phonebookService from './services/phonebook';
 
+const baseUrl = phonebookService.baseUrl;
+
 function App() {
   const [persons, setPersons] = useState([]);
 
-  // Fetch people using phonebookService
   useEffect(() => {
     phonebookService.getAll()
       .then(response => {
-        console.log("Fetch people");
+        console.log("Fetch data from phonebook service");
         setPersons(response.data);
       })
   }, []);
@@ -36,8 +37,8 @@ function App() {
 
       if(isConfirmed) {
         const updatedPerson = { ...personExists, number: newNumber };
-
-        axios.put(`http://localhost:3001/persons/${personExists.id}`, updatedPerson)
+        phonebookService.url
+        axios.put(baseUrl+`${personExists.id}`, updatedPerson)
         .then(response => {
           setPersons(persons.map(p => p.id !== personExists.id ? p : response.data));
           showNotification(`Added new number (${newNumber}) to ${newName}`, 'success');
@@ -51,7 +52,8 @@ function App() {
     else { // --- New person ---
       const newPerson = { name: newName, number: newNumber };
 
-      axios.post('http://localhost:3001/persons', newPerson)
+      console.log("Trying to add person to url: "+baseUrl)
+      axios.post(baseUrl, newPerson)
         .then(response => {
           setPersons(persons.concat(response.data));
           setNewName('');
@@ -60,7 +62,11 @@ function App() {
         })
         .catch(error => {
           console.error("Error: Failed to add person! ", error);
-          showNotification(`Couldn't add ${newName}`, 'error');
+
+          const errorMessage = error.response && error.response.data.error 
+          ? error.response.data.error // Get the error from backend and display inside notification.
+          : `Couldn't add ${newName}`;
+          showNotification(errorMessage, 'error');
         });
       }
     }
