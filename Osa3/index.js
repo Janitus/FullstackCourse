@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+// Frontend build
+app.use(express.static('build'));
+
 // HUOMIO! app.usejen järjestyksellä on väliä!
 app.use(express.json());
 
@@ -31,7 +34,7 @@ let persons = [
 // Gets
 
 app.get('/', function (req, res) {
-    res.send('hello, world!')
+    res.send('Greetings mortal.')
   })
 
 app.get('/api/persons', (req, res) => {
@@ -55,6 +58,10 @@ app.get('/api/persons/:id', (req, res) => {
     }
 });
 
+app.get('*', (req, res) => { // Make the user go back to index.html if they attempt to access some not existing site
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
+
 // Add and delete
 
 app.post('/api/persons', (req, res) => {
@@ -75,10 +82,10 @@ app.post('/api/persons', (req, res) => {
     }
 
     const person = {
-        name: body.name,
-        number: body.number,
         // Generate a random ID
         id: Math.floor(Math.random() * 1000000),
+        name: body.name,
+        number: body.number,
     };
 
     console.log("Added person to "+person.name+" "+person.number+" "+person.id)
