@@ -115,6 +115,10 @@ app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id;
     console.log("Attempting to delete ID: "+id);
 
+    if (!id || id === 'undefined') {
+        return res.status(400).json({ error: 'Invalid or missing ID' });
+    }
+
     Phonebook.findByIdAndRemove(id)
         .then(result => {
             if (result) {
@@ -128,6 +132,7 @@ app.delete('/api/persons/:id', (req, res) => {
             res.status(500).json({ error: 'Something went wrong' });
         });
 });
+
 
 
 //app.delete('/api/persons/:id', (req, res) => {
