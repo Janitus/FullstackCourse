@@ -89,25 +89,52 @@ app.post('/api/persons', (req, res) => {
         });
     }
 
-    const person = {
-        // Generate a random ID
-        id: Math.floor(Math.random() * 1000000),
-        name: body.name,
-        number: body.number,
-    };
+    //const person = {
+    //    // Generate a random ID
+    //    id: Math.floor(Math.random() * 1000000),
+    //    name: body.name,
+    //    number: body.number,
+    //};
 
-    console.log("Added person to "+person.name+" "+person.number+" "+person.id)
+    // console.log("Added person to "+person.name+" "+person.number+" "+person.id)
+
+    const person = new Phonebook({
+        name: body.name,
+        number: body.number
+    });
+
+    person.save().then(savedPerson => {
+        res.json(savedPerson);
+    });
 
     persons.push(person);
     res.json(person);
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-    const id = Number(req.params.id);
-    persons = persons.filter(p => p.id !== id);
+    const id = req.params.id;
 
-    res.status(204).end();
+    Phonebook.findByIdAndRemove(id)
+        .then(result => {
+            if (result) {
+                res.status(204).end();
+            } else {
+                res.status(404).json({ error: 'Person not found' });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error: 'Something went wrong' });
+        });
 });
+
+
+//app.delete('/api/persons/:id', (req, res) => {
+//    const id = Number(req.params.id);
+//    persons = persons.filter(p => p.id !== id);
+//
+//    res.status(204).end();
+//});
 
 // Search functions
 
@@ -133,26 +160,3 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
-
-// ------------------------------------------------------- Mongoose -------------------------------------------------------
-/*
-const mongoose = require('mongoose')
-
-const url = process.env.MONGODB_URI;
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('connected to MongoDB');
-  })
-  .catch((error) => {
-    console.log('error connecting to MongoDB:', error.message);
-  });
-
-
-/*
-const PORT = 3001;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-*/
