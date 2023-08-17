@@ -97,11 +97,11 @@ app.post('/api/persons', (req, res) => {
     });
 
     person.save().then(savedPerson => {
-        //res.json(savedPerson);
+        res.json(savedPerson);
     });
 
-    //persons.push(person);
-    //res.json(person);
+    persons.push(person);
+    res.json(person);
 });
 
 app.put('/api/persons/:id', (req, res) => { // Note to self: Put stands for update
@@ -149,7 +149,10 @@ app.delete('/api/persons/:id', (req, res) => {
 
 // Search functions
 
-const nameExists = (name) => persons.some(person => person.name.toLowerCase() === name.toLowerCase());
+const nameExists = async (name) => {
+    const person = await Phonebook.findOne({ name: name });
+    return !!person;
+};
 
 // Other functions
 
