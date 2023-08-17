@@ -27,14 +27,6 @@ app.use(cors())
 //app.use(unknownEndpoint)
 //app.use(requestLogger)
 
-//let persons = [
-//  { id: 1, name: "Simo Sipuli", number: "123-4567" },
-//  { id: 2, name: "Pekka Porkkana", number: "234-5678" },
-//  { id: 3, name: "Rokka", number: "111-1111" },
-//  { id: 4, name: "Muumi", number: "123-4567" },
-//  { id: 5, name: "Kalapuikko", number: "234-5678" },
-//];
-
 // Gets
 
 app.get('/', function (req, res) {
@@ -71,9 +63,9 @@ app.get('*', (req, res) => { // Make the user go back to index.html if they atte
 
 // Add, update and delete
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', async (req, res) => {
     const body = req.body;
-    console.log("Adding person "+body.name+" "+body.number);
+    console.log("Adding person " + body.name + " " + body.number);
 
     // Check if invalid input
     if (!body.name || !body.number) {
@@ -83,13 +75,12 @@ app.post('/api/persons', (req, res) => {
     }
 
     // Check if already exists
-    if (nameExists(body.name)) {
+    const exists = await nameExists(body.name); // We need to wait for the database to check if the name exists before we move onwards. This is also why async.
+    if (exists) {
         return res.status(400).json({ 
             error: 'name must be unique' 
         });
     }
-
-    // console.log("Added person to "+person.name+" "+person.number+" "+person.id)
 
     const person = new Phonebook({
         name: body.name,
@@ -99,10 +90,8 @@ app.post('/api/persons', (req, res) => {
     person.save().then(savedPerson => {
         res.json(savedPerson);
     });
-
-    persons.push(person);
-    res.json(person);
 });
+
 
 app.put('/api/persons/:id', (req, res) => { // Note to self: Put stands for update
     console.log(`Received PUT request for ID: ${req.params.id}`);
@@ -151,7 +140,11 @@ app.delete('/api/persons/:id', (req, res) => {
 
 const nameExists = async (name) => {
     const person = await Phonebook.findOne({ name: name });
-    return !!person;
+    if (person) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 // Other functions
