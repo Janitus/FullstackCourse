@@ -64,6 +64,8 @@ app.post('/api/persons', async (req, res, next) => {
     const body = req.body;
     console.log("Adding person " + body.name + " " + body.number);
 
+    if (body.content === undefined) return response.status(400).json({ error: 'content missing' }) // Not sure I need this either
+
     if (!body.name || !body.number) {
         return res.status(400).json({
             error: 'name or number missing'
@@ -169,9 +171,10 @@ const unknownEndpoint = (request, response) => {
 const errorHandler = (error, request, response, next) => {
     console.error("EH: "+error.message)
 
-    if (error.name === 'CastError')     return response.status(400).send({ error: 'malformatted id' });
-    else if (error.status === 404)      return response.status(404).send({ error: 'unknown endpoint' });
-    else                                return response.status(500).send({ error: 'An unexpected error occurred' });
+    if (error.name === 'CastError')                 return response.status(400).send({ error: 'malformatted id' });
+    else if (error.name === 'ValidationError')      return response.status(400).json({ error: error.message });
+    else if (error.status === 404)                  return response.status(404).send({ error: 'unknown endpoint' });
+    else                                            return response.status(500).send({ error: 'An unexpected error occurred' });
 
     next(error) // Never reached atm!
 }
