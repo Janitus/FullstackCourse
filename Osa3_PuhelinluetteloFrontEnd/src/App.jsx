@@ -184,4 +184,5 @@ const Persons = ({ persons, handleDelete }) => {
   );
 }
 
+
 export default App;

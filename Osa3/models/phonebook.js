@@ -10,15 +10,15 @@ const phonebookSchema = new mongoose.Schema({
     validate: {
       validator: function(v) {
         const parts = v.split('-');
-    
+
         if (parts.length !== 2) return false;
-        
+
         const firstPartIsValid = parts[0].length === 2 || parts[0].length === 3;
         const secondPartIsValid = parts[1].length >= 5 && parts[1].length <= 15;
-    
+
         // Check that both parts are valid, else it's just invalid.
         return firstPartIsValid && secondPartIsValid;
-    },
+      },
       message: props => `${props.value} is not a valid phone number!`
     }
   }
