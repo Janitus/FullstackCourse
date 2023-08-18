@@ -5,11 +5,9 @@ const Phonebook = require('./models/phonebook');
 
 require('dotenv').config();
 
-// Frontend build
-app.use(express.static('build'));
-
-// HUOMIO! app.usejen järjestyksellä on väliä!
+app.use(express.static('build')); // frontendin buildaus
 app.use(express.json());
+app.use(requestLogger);
 
 // Morgan
 
@@ -23,10 +21,6 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 const cors = require('cors')
 app.use(cors())
 
-
-//app.use(unknownEndpoint)
-//app.use(requestLogger)
-
 // Gets
 
 app.get('/', function (req, res) {
@@ -36,8 +30,14 @@ app.get('/', function (req, res) {
 app.get('/api/persons', (req, res) => {
     console.log("fetching phonebook")
     Phonebook.find({}).then(result => {
-        res.json(result);
+        if(result) {
+            res.json(result);
+        }
+        else {
+            response.status(404).end()
+        }
     })
+    .catch(error => next(error))
 });
 
 app.get('/api/info', (req, res) => {
@@ -160,6 +160,21 @@ const requestLogger = (request, response, next) => {
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
   }
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return response.status(400).send({ error: 'malformatted id' })
+    }
+
+    next(error)
+}
+
+// tämä tulee kaikkien muiden middlewarejen rekisteröinnin jälkeen!
+app.use(errorHandler)
 
 // Start
 
