@@ -7,7 +7,6 @@ require('dotenv').config();
 
 app.use(express.static('build')); // frontendin buildaus
 app.use(express.json());
-app.use(requestLogger);
 
 // Morgan
 
@@ -155,11 +154,13 @@ const requestLogger = (request, response, next) => {
     console.log('Body:  ', request.body)
     console.log('---')
     next()
-  }
+}
+
+app.use(requestLogger);
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
-  }
+}
 
 app.use(unknownEndpoint)
 
