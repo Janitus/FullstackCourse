@@ -64,8 +64,6 @@ app.post('/api/persons', async (req, res, next) => {
     const body = req.body;
     console.log("Adding person " + body.name + " " + body.number);
 
-    if (body.content === undefined) return res.status(400).json({ error: 'content missing' }) // Not sure I need this either
-
     if (!body.name || !body.number) {
         return res.status(400).json({
             error: 'name or number missing'
