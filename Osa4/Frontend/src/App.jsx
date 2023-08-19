@@ -1,35 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import Blog from './models/Blog';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [blogs, setBlogs] = useState([
+    {
+      id: 1,
+      title: "Blog1",
+      author: "Kalle Kaali",
+      url: "http://example.com/first-blog",
+      likes: 5
+    },
+    {
+      id: 2,
+      title: "Blog2",
+      author: "Pekka Peruna",
+      url: "http://example.com/second-blog",
+      likes: 10
+    }
+  ]);
 
   return (
-    <>
+    <div>
+      <div>Blogs</div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {blogs.map(blog => (
+          <BlogPost key={blog.id} blog={blog} />
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+const BlogPost = ({ blog }) => {
+  return (
+    <div className="blog">
+      <Blog blog={blog} />
+    </div>
+  );
+}
+
+
+export default App;

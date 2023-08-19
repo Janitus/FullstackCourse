@@ -1,42 +1,69 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+  background-color: rgb(55, 63, 71)
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+div {
+  color: rgb(192, 225, 255);
+  font-size: 60px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  color: green;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.notification {
+  background-color: lightgreen;
+  padding: 10px;
+  border: 3px solid green;
+  margin-bottom: 10px;
 }
 
-.card {
-  padding: 2em;
+.notification.success {
+background-color: lightgreen;
+border-color: green;
+color: rgb(0, 145, 19);
 }
 
-.read-the-docs {
-  color: #888;
+.notification.error {
+background-color: lightcoral;
+border-color: red;
+color: rgb(145, 0, 0);
+}
+
+
+.blog {
+  border: 4px solid #4a606d;
+  margin-bottom: 8px;
+  border-radius: 2px;
+  background-color: rgb(52, 66, 80);
+  font-size: 60px;
+
+}
+
+.blog h2 {
+  border-bottom: 4px solid #4a606d;
+  
+  margin: 0;
+  padding: 0;
+  font-size: 40px;
+}
+
+.blog span {
+  color: rgb(159, 204, 255);
+
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+}
+
+.blog p {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+}
+
+.blog button {
+  color: rgb(171, 177, 255);
+  background-color: rgb(71, 83, 121);
 }
