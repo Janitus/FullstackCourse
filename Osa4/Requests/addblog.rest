@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Sample Blog Title wuuu",
-  "author": "Sample Author",
-  "url": "http://sampleblogurl.com",
+  "title": "Osmo Otsikko",
+  "author": "Tekijä Teppo",
+  "url": "http://LahnaOn.Kala",
   "likes": 5
 }
