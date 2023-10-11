@@ -16,6 +16,7 @@ router.get('/', (request, response) => {
 });
 
 router.get('/api/blogs', (request, response) => {
+  console.log("Fetching blogs from backend")
   Blog
     .find({})
     .then(blogs => {
@@ -39,11 +40,13 @@ router.get('/api/blogs/:id', (request, response, next) => {
 // Functional
 
 router.post('/', (request, response) => {
+  console.log("POST: Received data for new blog:", request.body);
   const blog = new Blog(request.body);
 
   blog
     .save()
     .then(result => {
+      console.log("POST: Saved new blog:", result);
       response.status(201).json(result);
     });
 });
