@@ -24,7 +24,8 @@ router.get('/api/blogs', (request, response) => {
     })
 });
 
-
+// https://stackoverflow.com/questions/10695629/what-is-the-parameter-next-used-for-in-express
+// https://expressjs.com/en/guide/using-middleware.html
 router.get('/api/blogs/:id', (request, response, next) => {
   Blog.findById(request.params.id)
     .then(blog => {
@@ -51,6 +52,20 @@ router.post('/', (request, response) => {
     });
 });
 
+router.post('/api/blogs', async (request, response, next) => {
+  console.log("POST: Received data for new blog:", request.body);
+
+  if (!request.body.title || !request.body.url) return response.status(400).json({ error: 'no title or url' });
+
+  const blog = new Blog(request.body);
+  try {
+    const savedBlog = await blog.save();
+    response.json(savedBlog.toJSON());
+    //console.log("POST: Saved new blog:", result);
+  } catch (error) {
+    next(error);
+  }
+});
 
 router.put('/api/blogs/:id', (request, response, next) => {
   const body = request.body;
@@ -61,13 +76,33 @@ router.put('/api/blogs/:id', (request, response, next) => {
     url: body.url,
     likes: body.likes
 };
+/*
+router.delete('/api/blogs/:id', async (request, response) => {
+  await Blog.findByIdAndRemove(request.params.id);
+  response.status(204).end();
+});
+*/
 
-router.delete('/api/blogs/:id', (request, response, next) => {
-  Blog.findByIdAndRemove(request.params.id)
-    .then(() => {
-      response.status(204).end();
-    })
-    .catch(error => next(error));
+router.delete('/api/blogs/:id', async (request, response, next) => {
+  console.log("Delete blog with ID: ", request.params.id);
+
+  const deleteBlog = await Blog.findById(request.params.id);
+  if (deleteBlog) {
+    await deleteBlog.remove();
+    response.status(204).end();
+  } else {
+    response.status(404).send({ error: 'Not found' });
+  }
+
+  /*
+  try {
+    await Blog.findByIdAndRemove(request.params.id);
+    response.status(204).end();
+  } catch (error) {
+    console.log("Error at deleting: ",error);
+    next(error);
+  }
+  */
 });
 
 
