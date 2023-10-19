@@ -11,7 +11,7 @@ const handleErrors = require('./errorHandlers');
 connectDB();
 initializeMiddlewares(app);
 
-app.use('/', blogRoutes);
+app.use('/api/blogs', blogRoutes); //app.use('/', blogRoutes);
 app.use(handleErrors);
 
 const MONGODB_URI = process.env.NODE_ENV === 'test'
