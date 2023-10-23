@@ -4,14 +4,18 @@ const express = require('express');
 const app = express();
 
 const connectDB = require('./db');
-const initializeMiddlewares = require('./middleware/middlewares');
+//const initializeMiddlewares = require('./middleware/middlewares');
+const { middlewares: initializeMiddlewares } = require('./middleware/middlewares');
+//const { middlewares } = require('./middleware/middlewares');
 const blogRoutes = require('./routes/blogRoutes');
+const userRoutes = require('./routes/userRoutes');
 const handleErrors = require('./errorHandlers');
 
 connectDB();
 initializeMiddlewares(app);
 
 app.use('/api/blogs', blogRoutes); //app.use('/', blogRoutes);
+app.use('/api/users', userRoutes);
 app.use(handleErrors);
 
 const MONGODB_URI = process.env.NODE_ENV === 'test'

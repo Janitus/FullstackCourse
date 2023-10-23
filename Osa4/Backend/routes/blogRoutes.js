@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Blog = require('../models/Blog');
+const User = require('../models/User');
+const jwt = require('jsonwebtoken');
+const { getTokenFrom } = require('../middleware/middlewares.js');
 
 router.delete('/test', (req, res) => {
   console.log("Test DELETE route hit");
@@ -33,6 +36,7 @@ router.delete('/:id', async (request, response, next) => {
 router.get('/:id', (request, response, next) => { // router.get('/api/blogs/:id', (request, response, next) => {
   console.log("Get by ID");
   Blog.findById(request.params.id)
+    .populate('user', { username: 1, name: 1 })
     .then(blog => {
       if (blog) {
         response.json(blog);
@@ -45,8 +49,8 @@ router.get('/:id', (request, response, next) => { // router.get('/api/blogs/:id'
 
 router.get('/', (request, response) => {
   console.log("All blogs");
-  Blog
-    .find({})
+  Blog.find({})
+    .populate('user', { username: 1, name: 1 })
     .then(blogs => {
       response.json(blogs);
     })
@@ -58,31 +62,47 @@ router.get('/', (request, response) => {
 
 
 
-// Functional
-
-router.post('/', (request, response) => {
-  console.log("Post");
-  console.log("POST: Received data for new blog: ", request.body);
-  const blog = new Blog(request.body);
-
-  blog
-    .save()
-    .then(result => {
-      console.log("POST: Saved new blog: ", result);
-      response.status(201).json(result);
-    });
-});
 
 router.post('/', async (request, response, next) => {
   console.log("POST: Received data for new blog: ", request.body);
+  const body = request.body;
 
-  if (!request.body.title || !request.body.url) return response.status(400).json({ error: "no title or url" });
+  if (!body.title || !body.url) return response.status(400).json({ error: "no title or url" });
 
-  const blog = new Blog(request.body);
+  let decodedToken
+  try {
+    decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  } catch (error) {
+    console.log("Error: Invalid token in post")
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+
+
+  const user = await User.findById(decodedToken.id)
+  //const user = await User.findOne(); // https://www.geeksforgeeks.org/mongodb-findone-method/
+
+  if(!user) return response.status(400).json({ error: "Couldn't find a user to assign the author" });
+
+  const blog = new Blog({
+    title: body.title,
+    author: user.name, //body.author,
+    url: body.url,
+    likes: body.likes,
+    user: user._id
+  });
+
+
   try {
     const savedBlog = await blog.save();
-    response.json(savedBlog.toJSON());
-    //console.log("POST: Saved new blog:", result);
+
+    user.blogs = user.blogs.concat(savedBlog._id); // user.notes = user.notes.concat(savedNote._id)
+    await user.save();
+
+    response.json(savedBlog);
+
+    //response.status(201).json(savedBlog.toJSON());
+    //console.log("POST: Saved new blog:", savedBlog);
   } catch (error) {
     next(error);
   }
