@@ -8,7 +8,17 @@ div {
 }
 
 h1 {
-  color: green;
+  border-top: 1px solid #ccc;
+}
+
+input {
+  background-color: rgb(39, 49, 59);
+  color: rgb(126, 156, 187);
+}
+
+button {
+  background-color: rgb(126, 158, 190);
+  color: rgb(28, 35, 43);
 }
 
 .notification {

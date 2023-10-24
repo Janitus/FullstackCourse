@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
+Authorization: : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1MzY5MjEyMzI1NjgwNThhNzQ3YTJkOSIsImlhdCI6MTY5ODA4MTYwNywiZXhwIjoxNjk4MDkyNDA3fQ.7u5Tg6B5M2of0ME-EErOEpH2UTo2W_HdMjsTKnQBH-E
 
 {
-  "title": "Osmo Otsikko",
-  "author": "Tekijä Teppo",
-  "url": "http://LahnaOn.Kala",
-  "likes": 5
+  "title": "Lahna1",
+  "author": "Wanha",
+  "url": "JokuURL",
+  "likes": 0
 }
