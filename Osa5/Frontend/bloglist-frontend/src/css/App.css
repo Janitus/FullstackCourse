@@ -1,0 +1,98 @@
+body {
+    background-color: rgb(55, 63, 71)
+  }
+  
+  div {
+    color: rgb(192, 225, 255);
+  }
+
+  p {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 50px;
+    padding: 0px;
+  }
+
+  h4 {
+    font-size: 30px;
+    padding: 0px;
+    border-bottom: 1px solid #cccccc59;
+    border-top: 1px solid #cccccc59;
+  }
+  
+  h1 {
+    border-top: 1px solid #ccc;
+  }
+  
+  input {
+    background-color: rgb(39, 49, 59);
+    color: rgb(126, 156, 187);
+  }
+  
+  button {
+    background-color: rgb(126, 158, 190);
+    color: rgb(28, 35, 43);
+  }
+  
+  .notification {
+    background-color: lightgreen;
+    padding: 10px;
+    border: 3px solid green;
+    margin-bottom: 10px;
+  }
+  
+  .notification.success {
+  background-color: lightgreen;
+  border-color: green;
+  color: rgb(0, 145, 19);
+  }
+  
+  .notification.error {
+  background-color: lightcoral;
+  border-color: red;
+  color: rgb(145, 0, 0);
+  }
+  
+  
+  .blog {
+    border: 4px solid #4a606d;
+    margin-bottom: 8px;
+    border-radius: 2px;
+    background-color: rgb(52, 66, 80);
+    font-size: 60px;
+  
+  }
+
+  .blogpost {
+    border-radius: 2px;
+  }
+  
+  .blog h2 {
+    border-bottom: 4px solid #4a606d;
+    
+    margin: 0;
+    padding: 0;
+    font-size: 40px;
+  }
+  
+  .blog span {
+    color: rgb(159, 204, 255);
+  
+    display: inline;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+  }
+  
+  .blog p {
+    margin: 0;
+    padding: 0;
+    font-size: 30px;
+  }
+  
+  .blog button {
+    color: rgb(171, 177, 255);
+    background-color: rgb(71, 83, 121);
+  }
