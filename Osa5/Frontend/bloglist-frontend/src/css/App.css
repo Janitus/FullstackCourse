@@ -44,15 +44,15 @@ body {
   }
   
   .notification.success {
-  background-color: lightgreen;
-  border-color: green;
-  color: rgb(0, 145, 19);
+    background-color: lightgreen;
+    border-color: green;
+    color: rgb(0, 145, 19);
   }
   
   .notification.error {
-  background-color: lightcoral;
-  border-color: red;
-  color: rgb(145, 0, 0);
+    background-color: lightcoral;
+    border-color: red;
+    color: rgb(145, 0, 0);
   }
   
   

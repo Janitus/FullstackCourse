@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, notify }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,9 +15,10 @@ const Login = ({ setToken }) => {
       localStorage.setItem("loginUsername",response.data.username);
       localStorage.setItem("loginName",response.data.name);
       console.log("(Login) Current token: ",token)
+      notify("Logged in successfully as "+username, false);
     } catch (error) {
       console.error("Login error: ", error);
-      alert("Could not login");
+      notify("Failed to login", true);
     }
   };
 

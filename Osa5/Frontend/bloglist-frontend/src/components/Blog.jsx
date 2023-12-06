@@ -2,26 +2,58 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Blog = ({ blog, fetchBlogs }) => {
+const Blog = ({ blog, fetchBlogs, notify }) => {
+  //console.log(blog)
   const [likes, setLikes] = useState(blog.likes);
-  const [newBlog, setNewBlog] = useState({
-    title: 'Testblog',
-    author: '',
-    url: 'google.com',
-    likes: 0
-  });
+  const [viewInfo, setViewInfo] = useState(false);
 
   const handleLike = async () => {
     try {
-      const response = await axios.put("http://localhost:3001/api/blogs/"+blog.id+"/like");
-      const updatedBlog = response.data;
-      setLikes(updatedBlog.likes);
+      const updatedBlog = {
+        ...blog,
+        likes: blog.likes + 1
+      };
+
+      console.log("handle like",updatedBlog)
+
+      /* console output, should match task 5.9?
+        handle like 
+        {title: 'asd', author: 'testdude', url: 'asd', likes: 19, user: {…}, …}
+        author
+        : 
+        "testdude"
+        id
+        : 
+        "6570e3aac97977108316d32f"
+        likes
+        : 
+        19
+        title
+        : 
+        "asd"
+        url
+        : 
+        "asd"
+        user
+        : 
+        {username: 'test', name: 'testdude', id: '6536921232568058a747a2d9'}
+        [[Prototype]]
+        : 
+        Object
+      */
+
+      const response = await axios.put(`http://localhost:3001/api/blogs/${blog.id}`, updatedBlog);
+      setLikes(response.data.likes);
+      //const response = await axios.put("http://localhost:3001/api/blogs/"+blog.id+"/like");
+      //const updatedBlog = response.data;
+      //setLikes(updatedBlog.likes);
     } catch (error) {
       console.error("Error updating likes:", error);
     }
   };
 
   const handleDelete = async (blogId) => {
+    if (!window.confirm(`Are you sure you want to delete the blog "${blog.title}"?`)) return;
     console.log("handleDelete: "+blogId)
     try {
       const response = await fetch("http://localhost:3001/api/blogs/"+blogId, {
@@ -31,46 +63,37 @@ const Blog = ({ blog, fetchBlogs }) => {
       if (response.status === 204) {
         console.log("Deleted blog post");
         fetchBlogs();
+        //setBlogs(updatedBlogs);
+        notify(`Blog post deleted successfully`, false);
       }
-      else console.error("Failed to delete blog post");
+      else {
+        console.error("Failed to delete blog post");
+        notify("Failed to delete blog post", true);
+      }
     } catch (error) {
       console.error("Error deleting post:", error);
+      notify("Failed to delete blog post", true);
     }
   };
-
-  const handlePost = async () => {
-    try {
-      const authToken = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('loginToken')}`
-        }
-      };
-      const response = await axios.post("http://localhost:3001/api/blogs", newBlog, authToken);
-      if (response.status === 200) {
-        console.log("Blog post created:", response.data);
-        fetchBlogs();
-        setNewBlog({
-          title: 'Testblog',
-          author: '',
-          url: 'google.com',
-          likes: 0
-        });
-      }
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
-  };
-  
   
   return (
     <div className="blog">
-      <h2>{blog.title}<span> by {blog.author}</span></h2>
-      <p>{blog.url}</p>
-      <p>{likes} <button onClick={handleLike}>Like</button></p>
-      <p><button onClick={() => {
-          handleDelete(blog.id);
-          console.log(blog);
-        }}>Delete</button></p>
+      <h2>
+        {blog.title}<span> by {blog.author}</span>
+        <button onClick={() => setViewInfo(!viewInfo)}>
+          {viewInfo ? 'hide' : 'view'}
+        </button>
+
+        {viewInfo && (
+          <div>
+            <p>{blog.url}</p>
+            <p>{likes} <button onClick={handleLike}>Like</button></p>
+            {blog.user && blog.user.username === localStorage.getItem("loginUsername") && (
+              <button onClick={() => handleDelete(blog.id)}>Delete</button>
+            )}
+          </div>
+        )}
+      </h2>
     </div>
   );
 }

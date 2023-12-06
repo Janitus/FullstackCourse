@@ -4,46 +4,37 @@ import blogService from './services/blogs'
 import { Login, Logout } from './components/Login';
 import axios from 'axios';
 import './css/App.css';
+import Notification from './components/Notification';
+import BlogForm from './components/BlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [token, setToken] = useState(localStorage.getItem('loginToken') || null);
   const [username, setUsername] = useState('')
   const [name, setName] = useState('')
-
-  // New Blog
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
-
-  const handleTitleChange = (event) => setTitle(event.target.value);
-  const handleAuthorChange = (event) => setAuthor(event.target.value);
-  const handleUrlChange = (event) => setUrl(event.target.value);
-
-
-  const [newBlog, setNewBlog] = useState({
-    title: '',
-    author: '',
-    url: '',
-    likes: 0
-  });
+  const [notification, setNotification] = useState({ message: null, isError: false });
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const fetchBlogs = async () => {
     if(!token) return;
     try {
-      const response = await axios.get("http://localhost:3001/api/users", {
+      const response = await axios.get("http://localhost:3001/api/blogs", {
         headers: {
           'Authorization': `Bearer`+token
         }
       });
 
-      const allUsers = response.data;
-      const usernameToGet = localStorage.getItem("loginUsername");
-      const user = await allUsers.find(user => user.username === usernameToGet);
+      //const allUsers = response.data;
+      //const usernameToGet = localStorage.getItem("loginUsername");
+      //const user = await allUsers.find(user => user.username === usernameToGet);
 
-      setUsername(user.username)
-      setName(user.name)
-      setBlogs(user.blogs)
+      //console.log(response.data);
+
+      const usernameToGet = localStorage.getItem("loginUsername");
+      //const filteredBlogs = response.data.filter(blog => blog.user && blog.user.username === usernameToGet);  Don't remember if I had to filter them out like in part 4.
+      const sortedBlogs = response.data.sort((a, b) => b.likes - a.likes);
+
+      setBlogs(sortedBlogs);
 
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -68,34 +59,18 @@ const App = () => {
     setToken(newToken);
   };
 
-  
-  const handlePost = async () => {
-    try {
-      const authToken = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('loginToken')}`
-        }
-      };
-      const response = await axios.post("http://localhost:3001/api/blogs", newBlog, authToken);
-      if (response.status === 200) {
-        console.log("Blog post created: ", response.data," token ",authToken);
-        fetchBlogs();
-        setNewBlog({
-          title: title,
-          author: author,
-          url: url,
-          likes: 0
-        });
-      }
-    } catch (error) {
-      console.error("Error creating post:", error);
-    }
+  const notify = (message, isError = false) => {
+    setNotification({ message, isError });
+    setTimeout(() => {
+      setNotification({ message: null, isError: false });
+    }, 6000);
   };
 
   return (
     <div>
       <div>
-        {!token && <Login setToken={handleSetToken} />}
+        <Notification message={notification.message} isError={notification.isError} />
+        {!token && <Login setToken={handleSetToken} notify={notify} />}
         {token && <Logout setToken={handleSetToken} />}
 
       </div>
@@ -107,16 +82,22 @@ const App = () => {
       }
       {token && (
         <div>
-          <input type="text" value={title} onChange={handleTitleChange} placeholder="Title" />
-          <input type="text" value={author} onChange={handleAuthorChange} placeholder="Author" />
-          <input type="text" value={url} onChange={handleUrlChange} placeholder="URL" />
-          <button onClick={handlePost}>Create new blogpost</button>
+          <button onClick={() => setShowCreateForm(true)} style={{ display: showCreateForm ? 'none' : 'block' }}>
+            Create new post
+          </button>
+          {showCreateForm && (
+            <BlogForm
+              fetchBlogs={fetchBlogs}
+              notify={notify}
+              setShowCreateForm={setShowCreateForm}
+            />
+          )}
         </div>
       )}
 
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      {blogs.map(blog => (
+        <Blog key={blog.id} blog={blog} fetchBlogs={fetchBlogs} notify={notify} />
+      ))}
     </div>
   )
 }
