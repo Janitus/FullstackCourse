@@ -1,5 +1,6 @@
 import React from 'react';
 import '../css/App.css';
+import PropTypes from 'prop-types';
 
 const Notification = ({ message, isError }) => {
     if (!message) {
@@ -9,7 +10,13 @@ const Notification = ({ message, isError }) => {
     const notificationString = `notification ${isError ? 'error' : 'success'}`;
 
     return <div className={notificationString}>{message}</div>;
-  };
+};
   
-  export default Notification;
+Notification.propTypes = {
+  message: PropTypes.string,
+  isError: PropTypes.bool
+};
+
+
+export default Notification;
   

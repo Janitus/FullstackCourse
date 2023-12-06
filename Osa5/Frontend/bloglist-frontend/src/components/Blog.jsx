@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 
 const Blog = ({ blog, fetchBlogs, notify }) => {
   //console.log(blog)
@@ -97,6 +99,21 @@ const Blog = ({ blog, fetchBlogs, notify }) => {
     </div>
   );
 }
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      username: PropTypes.string.isRequired
+    })
+  }).isRequired,
+  fetchBlogs: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired
+};
 
 //const Blog = ({ blog }) => (
 //  <div>

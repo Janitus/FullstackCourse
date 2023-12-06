@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const BlogForm = ({ fetchBlogs, notify, setShowCreateForm }) => {
     const [title, setTitle] = useState('');
@@ -41,6 +42,12 @@ const BlogForm = ({ fetchBlogs, notify, setShowCreateForm }) => {
         <button onClick={() => setShowCreateForm(false)}>Cancel</button>
         </div>
     );
+};
+
+BlogForm.propTypes = {
+    fetchBlogs: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
+    setShowCreateForm: PropTypes.func.isRequired
 };
 
 export default BlogForm;

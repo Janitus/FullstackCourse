@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import { Login, Logout } from './components/Login';
 import axios from 'axios';
 import './css/App.css';
@@ -52,6 +51,7 @@ const App = () => {
   useEffect(() => {
     fetchToken();
     fetchBlogs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const handleSetToken = (newToken) => {

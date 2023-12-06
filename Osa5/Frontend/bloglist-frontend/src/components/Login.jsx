@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const Login = ({ setToken, notify }) => {
   const [username, setUsername] = useState("");
@@ -56,5 +57,10 @@ const Logout = ({ setToken }) => {
         </div>
     );
 }
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+  notify: PropTypes.func.isRequired
+};
 
 export { Login, Logout };
