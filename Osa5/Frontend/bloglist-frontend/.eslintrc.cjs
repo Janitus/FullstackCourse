@@ -3,6 +3,8 @@ module.exports = {
   env: {
     browser: true,
     es2020: true,
+    jest: true,
+    node: true,
     "jest/globals": true
   },
   extends: [
