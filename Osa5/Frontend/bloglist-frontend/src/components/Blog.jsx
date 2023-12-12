@@ -18,37 +18,9 @@ const Blog = ({ blog, fetchBlogs, notify }) => {
 
       console.log("handle like",updatedBlog)
 
-      /* console output, should match task 5.9?
-        handle like 
-        {title: 'asd', author: 'testdude', url: 'asd', likes: 19, user: {…}, …}
-        author
-        : 
-        "testdude"
-        id
-        : 
-        "6570e3aac97977108316d32f"
-        likes
-        : 
-        19
-        title
-        : 
-        "asd"
-        url
-        : 
-        "asd"
-        user
-        : 
-        {username: 'test', name: 'testdude', id: '6536921232568058a747a2d9'}
-        [[Prototype]]
-        : 
-        Object
-      */
-
       const response = await axios.put(`http://localhost:3001/api/blogs/${blog.id}`, updatedBlog);
       setLikes(response.data.likes);
-      //const response = await axios.put("http://localhost:3001/api/blogs/"+blog.id+"/like");
-      //const updatedBlog = response.data;
-      //setLikes(updatedBlog.likes);
+      fetchBlogs();
     } catch (error) {
       console.error("Error updating likes:", error);
     }
@@ -65,7 +37,6 @@ const Blog = ({ blog, fetchBlogs, notify }) => {
       if (response.status === 204) {
         console.log("Deleted blog post");
         fetchBlogs();
-        //setBlogs(updatedBlogs);
         notify(`Blog post deleted successfully`, false);
       }
       else {
@@ -82,22 +53,24 @@ const Blog = ({ blog, fetchBlogs, notify }) => {
     <div className="blog">
       <h2>
         {blog.title}<span> by {blog.author}</span>
-        <button onClick={() => setViewInfo(!viewInfo)}>
+        <button id="view" button onClick={() => setViewInfo(!viewInfo)}>
           {viewInfo ? 'hide' : 'view'}
         </button>
-
+  
         {viewInfo && (
           <div>
             <p>{blog.url}</p>
-            <p>{likes} <button onClick={handleLike}>Like</button></p>
+            <label id="likes">{likes}</label>
+            <button id="like" button onClick={() => handleLike(blog)}>Like</button>
+
             {blog.user && blog.user.username === localStorage.getItem("loginUsername") && (
-              <button onClick={() => handleDelete(blog.id)}>Delete</button>
+              <button id="delete" button onClick={() => handleDelete(blog.id)}>Delete</button>
             )}
           </div>
         )}
       </h2>
     </div>
-  );
+  );  
 }
 
 Blog.propTypes = {
@@ -114,11 +87,5 @@ Blog.propTypes = {
   fetchBlogs: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired
 };
-
-//const Blog = ({ blog }) => (
-//  <div>
-//    {blog.title} {blog.author}
-//  </div>  
-//)
 
 export default Blog

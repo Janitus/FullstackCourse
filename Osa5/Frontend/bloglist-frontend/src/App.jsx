@@ -82,7 +82,7 @@ const App = () => {
       }
       {token && (
         <div>
-          <button onClick={() => setShowCreateForm(true)} style={{ display: showCreateForm ? 'none' : 'block' }}>
+          <button id="new-blog" button onClick={() => setShowCreateForm(true)} style={{ display: showCreateForm ? 'none' : 'block' }}>
             Create new post
           </button>
           {showCreateForm && (

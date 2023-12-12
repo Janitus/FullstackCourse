@@ -35,10 +35,10 @@ const BlogForm = ({ fetchBlogs, notify, setShowCreateForm }) => {
 
     return (
         <div>
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-        <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Author" />
-        <input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="URL" />
-        <button onClick={handlePost}>Create new blogpost</button>
+        <input id="new-title" input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+        <input id="new-author" input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Author" />
+        <input id="new-url" input type="text" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="URL" />
+        <button id="submit-blog" button onClick={handlePost}>Create new blogpost</button>
         <button onClick={() => setShowCreateForm(false)}>Cancel</button>
         </div>
     );

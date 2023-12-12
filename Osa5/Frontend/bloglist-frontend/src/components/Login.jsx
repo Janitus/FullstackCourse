@@ -27,18 +27,20 @@ const Login = ({ setToken, notify }) => {
   return (
     <div>
       <input
+        id='username'
         type="text"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         placeholder="Username"
       />
       <input
+        id='password'
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
-      <button onClick={handleLogin}>Login</button>
+      <button id="login-button" button onClick={handleLogin}>Login</button>
     </div>
   );
 };
